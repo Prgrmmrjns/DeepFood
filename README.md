@@ -7,4 +7,4 @@ to classify uploaded images of food.
 ## Next steps
 * Estimate the amount of food in the picture
 * Give background information about the food
-* Show the certainty of the classifier
+* Extend food classes and increase performance
