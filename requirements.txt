@@ -1,0 +1,4 @@
+tensorflow
+PIL
+numpy
+pandas
