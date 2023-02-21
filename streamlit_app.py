@@ -1,11 +1,8 @@
 import streamlit as st
 import tensorflow as tf
-from urllib.request import urlopen
 from PIL import Image
 import numpy as np
 import pandas as pd
-from tensorflow.keras import layers
-from tensorflow.keras.layers.experimental import preprocessing
 
 @st.cache_data
 def load_data():
@@ -15,11 +12,11 @@ def load_data():
 
 def predict_image(image):
     base_model = tf.keras.applications.EfficientNetB0(include_top=False)
-    inputs = layers.Input(shape=(224, 224, 3))
+    inputs = tf.keras.layers.Input(shape=(224, 224, 3))
     x = base_model(inputs, training=False)
-    x = layers.GlobalAveragePooling2D()(x)
-    x = layers.Dense(101)(x)
-    outputs = layers.Activation("softmax", dtype=tf.float32)(x)
+    x = tf.keras.layers.GlobalAveragePooling2D()(x)
+    x = tf.keras.layers.Dense(101)(x)
+    outputs = tf.keras.layers.Activation("softmax", dtype=tf.float32)(x)
     model = tf.keras.Model(inputs, outputs)
     model.load_weights('my_model_weights.h5')
     image = tf.image.resize(image, [224, 224]).numpy().reshape((1,) + (224, 224, 3))
@@ -31,6 +28,7 @@ def predict_image(image):
 
 class_names = load_data()
 st.header("DeepFood")
+st.write('DeepFood helps you with finding out what you are eating. Upload an image of your food and find with delicacy you have.')
 with st.form('image_form'):
     # Add a file uploader to the form
     uploaded_file = st.file_uploader('Choose an image', type=['jpg', 'jpeg', 'png'])
