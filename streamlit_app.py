@@ -28,7 +28,7 @@ def predict_image(image):
 
 class_names = load_data()
 st.header("DeepFood")
-st.write('DeepFood helps you with finding out what you are eating. Upload an image of your food and find with delicacy you have.')
+st.write('DeepFood helps you with finding out what you are eating. Upload an image of your food and find out which delicacy you have.')
 with st.form('image_form'):
     # Add a file uploader to the form
     uploaded_file = st.file_uploader('Choose an image', type=['jpg', 'jpeg', 'png'])
