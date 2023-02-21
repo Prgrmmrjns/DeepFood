@@ -1,11 +1,8 @@
 import streamlit as st
 import tensorflow as tf
-import os 
 from urllib.request import urlopen
-from io import BytesIO
 from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental import preprocessing
@@ -27,9 +24,10 @@ def predict_image(image):
     model.load_weights('my_model_weights.h5')
     image = tf.image.resize(image, [224, 224]).numpy().reshape((1,) + (224, 224, 3))
     pred = model.predict(image)
+    certainty = np.max(pred)
     pred = np.argmax(pred)
     pred = class_names[pred]
-    return pred
+    return pred, certainty
 
 class_names = load_data()
 st.header("DeepFood")
@@ -43,6 +41,6 @@ with st.form('image_form'):
     # Make a prediction when the user submits the form
     if submit_button and uploaded_file is not None:
         image = Image.open(uploaded_file)
-        prediction = predict_image(image)
+        prediction, certainty = predict_image(image)
         st.image(image, caption='Uploaded Image', use_column_width=True)
-        st.write(f'Prediction: {prediction}')
+        st.write(f'Prediction: {prediction.title()}. Certainty: {round(certainty * 100, 2)} %')
